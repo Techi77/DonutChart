@@ -41,19 +41,22 @@ class MainActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
+        val dataForPie = mapOf(
+            Pair(Transparent, 150),
+            Pair(Red, 120),
+            Pair(Blue, 110),
+            Pair(Yellow, 170),
+            Pair(Green, 120),
+        )
         binding.donutChart.setContent {
             MaterialTheme {
                 PieChart(
-                    data = mapOf(
-                        Pair("Sample-1", 150),
-                        Pair("Sample-2", 120),
-                        Pair("Sample-3", 110),
-                        Pair("Sample-4", 170),
-                        Pair("Sample-5", 120),
-                    )
+                    data = dataForPie,
+                    backgroundColor = White
                 )
             }
         }
+        binding.donutChart.rotation = 270F
     }
 
 
@@ -61,24 +64,16 @@ class MainActivity : AppCompatActivity() {
 
 @Composable
 fun PieChart(
-    data: Map<String, Int>,
+    data: Map<Color, Int>,
+    backgroundColor: Color,
     radiusOuter: Dp = 40.dp,
     chartBarWidth: Dp = 16.dp,
-    backgroundColor: Color= White
 ) {
-
     val totalSum = data.values.sum()
     val floatValue = mutableListOf<Float>()
     data.values.forEachIndexed { index, values ->
         floatValue.add(index, 360 * values.toFloat() / totalSum.toFloat())
     }
-    val colors = listOf(
-        Transparent,
-        Red,
-        Blue,
-        Yellow,
-        Green
-    )
     var lastValue = 0f
     Box(
         modifier = Modifier
@@ -88,20 +83,19 @@ fun PieChart(
         Image(
             painter = painterResource(R.drawable.chart_background),
             contentDescription = "avatar",
-            contentScale = ContentScale.Crop,            // crop the image if it's not a square
+            contentScale = ContentScale.Crop,
             modifier = Modifier
                 .size(radiusOuter * 2f)
-                .clip(CircleShape)                       // clip to the circle shape
+                .clip(CircleShape)
         )
         Canvas(
             modifier = Modifier
                 .size(radiusOuter * 2f)
                 .padding(chartBarWidth / 2)
         ) {
-            // draw each Arc for each data entry in Pie Chart
             floatValue.forEachIndexed { index, value ->
                 drawArc(
-                    color = colors[index],
+                    color = data.keys.toList()[index],
                     startAngle = lastValue,
                     sweepAngle = value,
                     useCenter = false,
