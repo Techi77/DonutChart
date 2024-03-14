@@ -43,10 +43,10 @@ class MainActivity : AppCompatActivity() {
         super.onStart()
         val dataForPie = mapOf(
             Pair(Transparent, 150),
-            Pair(Red, 120),
-            Pair(Blue, 110),
+            Pair(Red, 20),
+            Pair(Blue, 70),
             Pair(Yellow, 170),
-            Pair(Green, 120),
+            Pair(Green, 50),
         )
         binding.donutChart.setContent {
             MaterialTheme {
@@ -66,8 +66,8 @@ class MainActivity : AppCompatActivity() {
 fun PieChart(
     data: Map<Color, Int>,
     backgroundColor: Color,
-    radiusOuter: Dp = 40.dp,
-    chartBarWidth: Dp = 16.dp,
+    radiusOuter: Dp = 140.dp,
+    chartBarWidth: Dp = 46.dp,
 ) {
     val totalSum = data.values.sum()
     val floatValue = mutableListOf<Float>()
